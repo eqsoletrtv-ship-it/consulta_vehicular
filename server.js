@@ -93,7 +93,7 @@ app.post("/api/vehicles", auth, (req, res) => {
   }
 
   const sql = `INSERT INTO vehicles
-    (plate, vehicle_type, brand, model, year, color, chasis, motor, service, issue_date, expiry_date, status, owner, notes)
+    (plate, vehicle_type, brand, model, year, color, service, issue_date, expiry_date, status, owner, notes)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   db.run(sql, [
