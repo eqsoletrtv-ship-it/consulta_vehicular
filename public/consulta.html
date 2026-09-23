@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Consulta de vehículo</title>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="topbar"><div class="brand">CONSULTA VEHICULAR <span>QR</span></div></div>
+<main class="container narrow">
+  <div id="loading" class="panel center">Consultando registro...</div>
+  <section id="result" class="panel hidden">
+    <div class="statusIcon" id="statusIcon">✓</div>
+    <div class="privateTag">SISTEMA PRIVADO DE CONSULTA</div>
+    <h1 id="title">Registro</h1>
+    <div id="status" class="status"></div>
+    <div class="dataCard">
+      <div><b>Placa</b><strong id="plate"></strong></div>
+      <div><b>Tipo de vehículo</b><span id="vehicle_type"></span></div>
+      <div><b>Marca</b><span id="brand"></span></div>
+      <div><b>Modelo</b><span id="model"></span></div>
+      <div><b>Año</b><span id="year"></span></div>
+      <div><b>Color</b><span id="color"></span></div>
+      <div><b>Servicio</b><span id="service"></span></div>
+      <div><b>Fecha de emisión</b><span id="issue_date"></span></div>
+      <div><b>Fecha de vencimiento</b><span id="expiry_date"></span></div>
+      <div class="full"><b>Observaciones</b><span id="notes"></span></div>
+    </div>
+    <p class="disclaimer">Este registro pertenece a un sistema privado de consulta. No constituye una certificación oficial de la ANT ni de una entidad pública.</p>
+  </section>
+  <section id="error" class="panel hidden center"><h2>Registro no encontrado</h2><p>El código QR no corresponde a un registro disponible.</p></section>
+</main>
+<script>
+(async()=>{
+  const id = location.pathname.split("/").filter(Boolean).pop();
+  try {
+    const r = await fetch("/api/public/vehicles/" + encodeURIComponent(id));
+    if(!r.ok) throw new Error();
+    const v = await r.json();
+    document.getElementById("loading").classList.add("hidden");
+    document.getElementById("result").classList.remove("hidden");
+    for(const k of ["plate","vehicle_type","brand","model","year","color","service","issue_date","expiry_date","notes"])
+      document.getElementById(k).textContent = v[k] || "—";
+    const valid = v.status === "Vigente";
+    document.getElementById("status").textContent = v.status;
+    document.getElementById("status").className = "status " + (valid ? "valid" : "invalid");
+    document.getElementById("statusIcon").textContent = valid ? "✓" : "!";
+    document.getElementById("statusIcon").className = "statusIcon " + (valid ? "validIcon" : "invalidIcon");
+    document.getElementById("title").textContent = valid ? "Registro válido" : "Estado del registro";
+  } catch(e) {
+    document.getElementById("loading").classList.add("hidden");
+    document.getElementById("error").classList.remove("hidden");
+  }
+})();
+</script>
+</body>
+</html>

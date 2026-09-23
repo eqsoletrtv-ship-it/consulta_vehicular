@@ -1,0 +1,6 @@
+1. Instala Node.js 18+.
+2. Abre CMD/PowerShell dentro de esta carpeta.
+3. Ejecuta: npm install
+4. Copia .env.example a .env y cambia ADMIN_PASSWORD y SESSION_SECRET.
+5. Ejecuta: npm start
+6. Abre http://localhost:3000
