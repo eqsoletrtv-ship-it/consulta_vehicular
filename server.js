@@ -22,7 +22,9 @@ app.use(session({
 }));
 app.use(express.static(path.join(__dirname, "public")));
 
-const db = new sqlite3.Database(path.join(__dirname, "vehiculos.db"));
+const db = new sqlite3.Database(
+  path.join(process.env.RAILWAY_VOLUME_MOUNT_PATH || __dirname, "vehiculos.db")
+);
 
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS vehicles (
