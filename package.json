@@ -1,6 +1,7 @@
 {
   "name": "consulta-vehicular-qr",
   "version": "1.0.0",
+  "allowScripts": ["sqlite3"],
   "description": "Sistema privado de consulta vehicular mediante QR",
   "main": "server.js",
   "scripts": {
